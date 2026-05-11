@@ -3208,6 +3208,164 @@
   }
   .wa-btn:hover { transform: scale(1.12); box-shadow: 0 4px 28px rgba(37,211,102,0.8); }
   .wa-btn svg { width: 28px; height: 28px; fill: #fff; }
+
+  /* ─── RÉACTIONS PAR ÉQUIPE ─── */
+  .match-team-reactions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .team-react-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+  .team-react-name {
+    font-family: var(--font-ui);
+    font-size: 9px;
+    color: var(--text2);
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+  .team-react-btns {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+  .team-react-btns .reaction-btn {
+    padding: 2px 5px;
+    font-size: 13px;
+    border-radius: 14px;
+  }
+
+  /* ─── POPUP IDENTITÉ ─── */
+  #identityOverlay {
+    position: fixed; inset: 0; z-index: 99997;
+    background: rgba(0,0,0,0.85);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .identity-box {
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 16px;
+    padding: 28px 24px;
+    width: 100%; max-width: 340px;
+    text-align: center;
+  }
+  .identity-title {
+    font-family: var(--font-display);
+    font-size: 22px; letter-spacing: 3px;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .identity-sub {
+    font-family: var(--font-ui); font-size: 12px;
+    color: var(--text2); margin-bottom: 20px; line-height: 1.5;
+  }
+  .identity-name-input {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 10px;
+    color: var(--text); font-family: var(--font-ui);
+    font-size: 14px; padding: 10px 14px;
+    outline: none; margin-bottom: 16px;
+    text-align: center; transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .identity-name-input:focus { border-color: var(--accent); }
+  .identity-avatar-label {
+    font-family: var(--font-ui); font-size: 10px;
+    color: var(--text2); letter-spacing: 1px;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .avatar-grid {
+    display: flex; flex-wrap: wrap;
+    gap: 8px; justify-content: center;
+    margin-bottom: 20px;
+  }
+  .avatar-btn {
+    font-size: 24px; background: var(--surface2);
+    border: 2px solid transparent; border-radius: 10px;
+    padding: 6px 8px; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .avatar-btn.selected {
+    border-color: var(--accent);
+    background: rgba(232,185,35,0.15);
+    transform: scale(1.15);
+  }
+  .identity-join-btn {
+    width: 100%; background: var(--accent); color: #000;
+    border: none; border-radius: 10px; padding: 12px;
+    font-family: var(--font-body); font-size: 14px;
+    font-weight: 700; cursor: pointer; letter-spacing: 2px;
+    transition: opacity 0.2s;
+  }
+  .identity-join-btn:hover { opacity: 0.85; }
+  .identity-skip {
+    font-family: var(--font-ui); font-size: 11px;
+    color: var(--text2); cursor: pointer; margin-top: 10px;
+    display: block; transition: color 0.2s;
+  }
+  .identity-skip:hover { color: var(--text); }
+
+  /* ─── AMBASSADEURS ─── */
+  .ambass-wrap { padding-bottom: 40px; }
+  .ambass-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 14px 16px;
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 10px; transition: background 0.15s;
+  }
+  .ambass-card:hover { background: var(--surface2); }
+  .ambass-rank {
+    font-family: var(--font-display); font-size: 22px;
+    color: var(--text2); width: 32px; text-align: center;
+    flex-shrink: 0;
+  }
+  .ambass-avatar { font-size: 32px; flex-shrink: 0; }
+  .ambass-info { flex: 1; }
+  .ambass-name {
+    font-family: var(--font-ui); font-size: 14px;
+    font-weight: 700; color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .ambass-badge {
+    font-family: var(--font-ui); font-size: 9px;
+    color: var(--accent); letter-spacing: 1px;
+    text-transform: uppercase; margin-top: 2px;
+  }
+  .ambass-pts {
+    font-family: var(--font-display); font-size: 28px;
+    color: var(--accent); flex-shrink: 0;
+  }
+  .ambass-pts-lbl {
+    font-family: var(--font-ui); font-size: 9px;
+    color: var(--text2); text-align: right; margin-top: -4px;
+  }
+  .ambass-card.gold { border-color: #e8b923; background: rgba(232,185,35,0.06); }
+  .ambass-card.silver { border-color: #b0b8cc; }
+  .ambass-card.bronze { border-color: #cd7f32; }
+
+  /* Mini badge utilisateur dans le header */
+  .user-badge {
+    display: flex; align-items: center; gap: 5px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 4px 10px 4px 6px;
+    cursor: pointer; transition: border-color 0.2s;
+    font-family: var(--font-ui); font-size: 11px; color: var(--text2);
+  }
+  .user-badge:hover { border-color: var(--accent); }
+  .user-badge-avatar { font-size: 18px; }
 </style>
 
 <!-- ─── FIREBASE SDK ─── -->
@@ -3331,16 +3489,42 @@
     });
   }
 
+  // ── Sync users/ambassadeurs depuis Firebase ──
+  function syncUsers() {
+    onValue(ref(db, 'users'), snap => {
+      window._fbUsers = snap.val() || {};
+      const cont = document.getElementById('ambassadorsContent');
+      if (cont && document.getElementById('view-ambassadors') &&
+          document.getElementById('view-ambassadors').style.display !== 'none') {
+        if (typeof window.renderAmbassadors === 'function') window.renderAmbassadors();
+      }
+    });
+  }
+
   // ── Démarre la sync après chargement ──
   window.addEventListener('load', () => {
     syncReactions();
     syncComments();
     syncPronos();
+    syncUsers();
   });
 </script>
 
 </head>
-<body>
+<body style="overflow-x:hidden;">
+
+<!-- ─── POPUP IDENTITÉ ─── -->
+<div id="identityOverlay" style="display:none;">
+  <div class="identity-box">
+    <div class="identity-title">🇭🇹 Bienvenue !</div>
+    <div class="identity-sub">Rejoins la communauté AYITI nan Mondyal.<br>Choisis ton nom et ton avatar pour participer.</div>
+    <input class="identity-name-input" id="identityName" type="text" placeholder="Ton prénom ou pseudo..." maxlength="20">
+    <div class="identity-avatar-label">Choisis ton avatar</div>
+    <div class="avatar-grid" id="avatarGrid"><button class="avatar-btn" onclick="selectAvatar(this)">⚽</button><button class="avatar-btn" onclick="selectAvatar(this)">🦁</button><button class="avatar-btn" onclick="selectAvatar(this)">🐯</button><button class="avatar-btn" onclick="selectAvatar(this)">🦅</button><button class="avatar-btn" onclick="selectAvatar(this)">🏆</button><button class="avatar-btn" onclick="selectAvatar(this)">🔥</button><button class="avatar-btn" onclick="selectAvatar(this)">💪</button><button class="avatar-btn" onclick="selectAvatar(this)">🌟</button><button class="avatar-btn" onclick="selectAvatar(this)">👑</button><button class="avatar-btn" onclick="selectAvatar(this)">🎯</button><button class="avatar-btn" onclick="selectAvatar(this)">🇭</button><button class="avatar-btn" onclick="selectAvatar(this)">🇹</button><button class="avatar-btn" onclick="selectAvatar(this)">⚡</button></div>
+    <button class="identity-join-btn" onclick="joinCommunity()">⚡ Rejoindre !</button>
+    <span class="identity-skip" onclick="skipIdentity()">Continuer sans profil</span>
+  </div>
+</div>
 
 <!-- ─── SPLASH SCREEN ─── -->
 <div id="splashScreen">
@@ -3426,6 +3610,10 @@
       </button>
       <button class="btn-haiti-theme" onclick="toggleHaitiTheme()" title="Thème Haïti 🇭🇹" id="btnHaitiTheme">🇭🇹 Haïti</button>
       <button class="btn-elmeco-theme" onclick="toggleElmecoTheme()" title="Thème ELMECO" id="btnElmecoTheme">⚡ ELMECO</button>
+      <div class="user-badge" id="userBadge" onclick="showProfile()" style="display:none;">
+        <span class="user-badge-avatar" id="userBadgeAvatar">⚽</span>
+        <span id="userBadgeName">...</span>
+      </div>
       <button class="btn-theme" onclick="openAdmin()" title="Modération" style="border-color:rgba(231,76,60,0.4);color:#e74c3c;">🔐</button>
     </div>
   </div>
@@ -3456,6 +3644,9 @@
     </div>
     <div class="sidebar-nav-item" id="sidebarInstallBtn" onclick="closeSidebar(); installApp();" style="display:none;">
       <span class="sidebar-nav-icon">📲</span> Installer l'application
+    </div>
+    <div class="sidebar-nav-item" onclick="closeSidebar(); openProfileEditor();">
+      <span class="sidebar-nav-icon">👤</span> Mon profil & Points
     </div>
     <div class="sidebar-nav-item" onclick="closeSidebar(); openAdmin();" style="color:#e74c3c; border-left-color:#e74c3c;">
       <span class="sidebar-nav-icon">🔐</span> Modération Admin
@@ -3768,6 +3959,7 @@
     <button class="tab" onclick="showView('ranking', this)">📊 Classement</button>
     <button class="tab" onclick="showView('scorers', this)">⚽ Buteurs</button>
     <button class="tab" onclick="showView('pronostics', this)">🎯 Pronostics</button>
+    <button class="tab" onclick="showView('ambassadors', this)">🏆 Ambassadeurs</button>
     <button class="tab" onclick="showView('starred', this)">⭐ Favoris</button>
   </div>
 
@@ -4162,15 +4354,10 @@ const _state = loadState();
 let starred     = _state.starred     || [];
 const REACTIONS = _state.reactions  || {};   // { matchId: { emoji: count, _mine: emoji } }
 const REACTION_LIST = [
-  { key:'fire',  emoji:'🔥', label:'Feu !'        },
-  { key:'wow',   emoji:'🤩', label:'Impressionnant'},
-  { key:'angry', emoji:'😡', label:'Décevant'      },
-  { key:'trash', emoji:'🗑️', label:'Nul'          },
-  { key:'heart', emoji:'🧡', label:'J\'adore'     },
-  { key:'clap',  emoji:'👏', label:'Bravo !'       },
-  { key:'up',    emoji:'👍', label:'Bon match'     },
-  { key:'down',  emoji:'👎', label:'Mauvais match' },
-  { key:'broke', emoji:'💔', label:'Cœur brisé'    },
+  { key:'heart', emoji:'🧡', label:'J\'adore'    },
+  { key:'bulb',  emoji:'💡', label:'Génial !'   },
+  { key:'broke', emoji:'💔', label:'Déçu'       },
+  { key:'angry', emoji:'😡', label:'En colère' },
 ];
 let currentGroup = 'all';
 let currentSearch = '';
@@ -4244,22 +4431,42 @@ function renderMatchCard(m, container) {
         <span class="match-stadium-icon">🏟️</span>
         <span>${m.stadium}, ${m.city}</span>
       </div>
-      <a class="btn-whatsapp" href="${waLink}" target="_blank" rel="noopener" onclick="event.stopPropagation()" title="Partager sur WhatsApp">
+      <a class="btn-whatsapp" href="${waLink}" target="_blank" rel="noopener" onclick="event.stopPropagation(); addPoints(2, 'Partage WhatsApp');" title="Partager sur WhatsApp">
         <span>📲</span><span>WA</span>
       </a>
       <button class="match-star ${isStarred ? 'starred' : ''}" onclick="event.stopPropagation(); toggleStar(${m.id}, this)">
         ${isStarred ? '⭐' : '☆'}
       </button>
     </div>
-    <div class="match-reactions" id="reactions-${m.id}" onclick="event.stopPropagation()">
-      ${REACTION_LIST.map(r => {
-        const count = (REACTIONS[m.id] && REACTIONS[m.id][r.key]) || 0;
-        const reacted = REACTIONS[m.id] && REACTIONS[m.id]['_mine'] === r.key;
-        return `<button class="reaction-btn${reacted ? ' reacted' : ''}" data-key="${r.key}" onclick="event.stopPropagation(); reactMatch(${m.id}, '${r.key}')" title="${r.label}">
-          <span class="reaction-emoji">${r.emoji}</span>
-          <span class="reaction-count">${count || ''}</span>
-        </button>`;
-      }).join('')}
+    <div class="match-team-reactions" onclick="event.stopPropagation()">
+      <div class="team-react-col">
+        <div class="team-react-name">${getFlag(m.home)} ${m.home}</div>
+        <div class="team-react-btns" id="reactions-${m.id}-home">
+          ${REACTION_LIST.map(r => {
+            const key = r.key + '_home';
+            const count = (REACTIONS[m.id] && REACTIONS[m.id][key]) || 0;
+            const reacted = REACTIONS[m.id] && REACTIONS[m.id]['_mine_home'] === r.key;
+            return `<button class="reaction-btn${reacted ? ' reacted' : ''}" data-key="${key}" onclick="event.stopPropagation(); reactTeam(${m.id}, '${r.key}', 'home'); addPoints(1, 'Réaction');" title="${r.label} ${m.home}">
+              <span class="reaction-emoji">${r.emoji}</span>
+              <span class="reaction-count">${count || ''}</span>
+            </button>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="team-react-col">
+        <div class="team-react-name">${getFlag(m.away)} ${m.away}</div>
+        <div class="team-react-btns" id="reactions-${m.id}-away">
+          ${REACTION_LIST.map(r => {
+            const key = r.key + '_away';
+            const count = (REACTIONS[m.id] && REACTIONS[m.id][key]) || 0;
+            const reacted = REACTIONS[m.id] && REACTIONS[m.id]['_mine_away'] === r.key;
+            return `<button class="reaction-btn${reacted ? ' reacted' : ''}" data-key="${key}" onclick="event.stopPropagation(); reactTeam(${m.id}, '${r.key}', 'away'); addPoints(1, 'Réaction');" title="${r.label} ${m.away}">
+              <span class="reaction-emoji">${r.emoji}</span>
+              <span class="reaction-count">${count || ''}</span>
+            </button>`;
+          }).join('')}
+        </div>
+      </div>
     </div>
     <div class="match-comments-section" onclick="event.stopPropagation()">
       <button class="comments-toggle-btn" onclick="event.stopPropagation(); toggleComments(${m.id}, this)">
@@ -4779,7 +4986,7 @@ function toggleStar(id, btn) {
 
 // ─── VIEWS ──────────────────────────────────────────────
 function showView(view, btn) {
-  ['calendar','groups','knockout','starred','ranking','scorers','pronostics'].forEach(v => {
+  ['calendar','groups','knockout','starred','ranking','scorers','pronostics','ambassadors'].forEach(v => {
     const el = $('view-' + v);
     if (el) el.style.display = 'none';
   });
@@ -4787,10 +4994,11 @@ function showView(view, btn) {
   btn.classList.add('active');
   const el = $('view-' + view);
   if (el) el.style.display = 'block';
-  if (view === 'starred')     renderStarred();
-  if (view === 'ranking')     renderRanking();
-  if (view === 'scorers')     renderScorers();
-  if (view === 'pronostics')  renderPronostics();
+  if (view === 'starred')      renderStarred();
+  if (view === 'ranking')      renderRanking();
+  if (view === 'scorers')      renderScorers();
+  if (view === 'pronostics')   renderPronostics();
+  if (view === 'ambassadors')  renderAmbassadors();
 }
 
 // ─── CUSTOMIZATION ──────────────────────────────────────
@@ -5724,10 +5932,173 @@ function installApp() {
   }
 }
 
+
+// ─── RÉACTIONS PAR ÉQUIPE ─────────────
+function reactTeam(matchId, key, side) {
+  if (!REACTIONS[matchId]) REACTIONS[matchId] = {};
+  const mineKey = '_mine_' + side;
+  const fullKey = key + '_' + side;
+  const prev = REACTIONS[matchId][mineKey];
+  if (prev) {
+    const prevFull = prev + '_' + side;
+    REACTIONS[matchId][prevFull] = Math.max(0, (REACTIONS[matchId][prevFull] || 1) - 1);
+    if (!REACTIONS[matchId][prevFull]) delete REACTIONS[matchId][prevFull];
+    delete REACTIONS[matchId][mineKey];
+  }
+  if (prev !== key) {
+    REACTIONS[matchId][fullKey] = (REACTIONS[matchId][fullKey] || 0) + 1;
+    REACTIONS[matchId][mineKey] = key;
+  }
+  saveState({ reactions: REACTIONS });
+  // Sync Firebase
+  if (window._fb) window.fbReactMatch(matchId, fullKey);
+  // Update UI
+  const container = document.getElementById('reactions-' + matchId + '-' + side);
+  if (!container) return;
+  container.querySelectorAll('.reaction-btn').forEach((btn, i) => {
+    const r = REACTION_LIST[i];
+    const rKey = r.key + '_' + side;
+    const count = (REACTIONS[matchId] && REACTIONS[matchId][rKey]) || 0;
+    const reacted = REACTIONS[matchId] && REACTIONS[matchId][mineKey] === r.key;
+    btn.classList.toggle('reacted', reacted);
+    btn.querySelector('.reaction-count').textContent = count || '';
+  });
+}
+
+// ─── SYSTÈME IDENTITÉ & POINTS ─────────────────────────
+
+const USER_KEY = '_userProfile';
+let _user = null;
+
+function loadUser() {
+  const raw = localStorage.getItem(USER_KEY);
+  if (raw) { try { _user = JSON.parse(raw); } catch(e) {} }
+  return _user;
+}
+
+function saveUser() {
+  localStorage.setItem(USER_KEY, JSON.stringify(_user));
+  if (window._fb && _user) {
+    const uid = window._fb.userId;
+    window._fb.set(window._fb.ref(window._fb.db, 'users/' + uid), {
+      name: _user.name, avatar: _user.avatar,
+      points: _user.points || 0, updated: Date.now()
+    });
+  }
+}
+
+function addPoints(pts, reason) {
+  if (!_user) return;
+  _user.points = (_user.points || 0) + pts;
+  saveUser();
+  showPointsToast('+' + pts + ' pts — ' + reason);
+  updateUserBadge();
+}
+
+function showPointsToast(msg) {
+  const t = document.createElement('div');
+  t.style.cssText = 'position:fixed;bottom:140px;right:16px;z-index:9999;background:var(--accent);color:#000;font-family:var(--font-ui);font-size:12px;font-weight:700;padding:8px 14px;border-radius:20px;pointer-events:none;';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+function initIdentity() {
+  loadUser();
+  if (!_user) {
+    setTimeout(() => {
+      const ol = document.getElementById('identityOverlay');
+      if (ol) ol.style.display = 'flex';
+    }, 6500);
+  } else {
+    updateUserBadge();
+  }
+}
+
+function selectAvatar(btn) {
+  document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function joinCommunity() {
+  const n = document.getElementById('identityName');
+  const a = document.querySelector('.avatar-btn.selected');
+  const existingPoints = _user ? (_user.points || 0) : 0;
+  const existingJoined = _user ? _user.joined : Date.now();
+  _user = {
+    name: (n && n.value.trim()) || 'Anonyme',
+    avatar: a ? a.textContent : '⚽',
+    points: existingPoints,
+    joined: existingJoined
+  };
+  saveUser();
+  document.getElementById('identityOverlay').style.display = 'none';
+  updateUserBadge();
+  addPoints(5, 'Bienvenue !');
+}
+
+function skipIdentity() {
+  _user = { name: 'Visiteur', avatar: '⚽', points: 0, joined: Date.now() };
+  saveUser();
+  document.getElementById('identityOverlay').style.display = 'none';
+  updateUserBadge();
+}
+
+function updateUserBadge() {
+  if (!_user) return;
+  const badge = document.getElementById('userBadge');
+  const avatar = document.getElementById('userBadgeAvatar');
+  const name = document.getElementById('userBadgeName');
+  if (badge) badge.style.display = 'flex';
+  if (avatar) avatar.textContent = _user.avatar || '⚽';
+  if (name) name.textContent = (_user.name || 'Visiteur') + ' · ' + (_user.points || 0) + ' pts';
+}
+
+function openProfileEditor() {
+  // Reset et réouvre la popup
+  const ol = document.getElementById('identityOverlay');
+  if (!ol) return;
+  // Pre-fill existing data
+  const nameInput = document.getElementById('identityName');
+  if (nameInput && _user) nameInput.value = _user.name !== 'Visiteur' && _user.name !== 'Anonyme' ? _user.name : '';
+  ol.style.display = 'flex';
+}
+
+function showProfile() {
+  if (!_user) return;
+  alert(_user.avatar + ' ' + _user.name + '\n🏆 Points: ' + (_user.points||0) + '\n\nContinue à partager et commenter pour monter dans le classement !');
+}
+
+// ─── AMBASSADEURS ────────────────────────────────────────
+function renderAmbassadors() {
+  const cont = document.getElementById('ambassadorsContent');
+  if (!cont) return;
+  if (!window._fbUsers || !Object.keys(window._fbUsers).length) {
+    cont.innerHTML = '<div style="color:var(--text2);font-family:var(--font-ui);font-size:13px;padding:30px;text-align:center;">🏆 Aucun ambassadeur encore. Sois le premier !</div>';
+    return;
+  }
+  const medals = ['🥇','🥈','🥉'];
+  const classes = ['gold','silver','bronze'];
+  const users = Object.values(window._fbUsers).sort((a,b) => (b.points||0)-(a.points||0)).slice(0,20);
+  cont.innerHTML = users.map((u,i) => `
+    <div class="ambass-card ${classes[i]||''}">
+      <div class="ambass-rank">${medals[i]||(i+1)}</div>
+      <div class="ambass-avatar">${u.avatar||'⚽'}</div>
+      <div class="ambass-info">
+        <div class="ambass-name">${u.name||'Anonyme'}</div>
+        ${i===0?'<div class="ambass-badge">⚡ Ambassadeur ELMECO</div>':''}
+      </div>
+      <div>
+        <div class="ambass-pts">${u.points||0}</div>
+        <div class="ambass-pts-lbl">pts</div>
+      </div>
+    </div>`).join('');
+}
+
 // ─── EXPOSE POUR FIREBASE CALLBACKS ───────────────────
 window.renderAdminComments = renderAdminComments;
 window.renderCommentsList  = renderCommentsList;
-window.fbApproveComment    = function(mid, cid) { if(window._fb) window._fb.update(window._fb.ref(window._fb.db,'comments/'+mid+'/'+cid),{approved:true}); };
+window.fbApproveComment    = function(mid, cid) { if(window._fb) window._fb.update(window._fb.ref(window._fb.db,'comments/'+mid+'/'+cid),{approved:true}); addPoints(5, 'Commentaire approuvé'); };
 window.fbDeleteComment     = function(mid, cid) { if(window._fb) window._fb.remove(window._fb.ref(window._fb.db,'comments/'+mid+'/'+cid)); };
 
 // ─── INIT ────────────────────────────────────────────────
@@ -5883,6 +6254,8 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 initNotifications();
 initSafariBanner();
+initIdentity();
+window.renderAmbassadors = renderAmbassadors;
 
 // Restore persisted preferences
 (function restorePrefs() {
@@ -6021,59 +6394,7 @@ document.querySelectorAll('.filter-btn:not(:first-child)').forEach(btn => {
   <span class="elmeco-icon">⚡</span>
   <span class="elmeco-tagline">Votre solution en<br>électricité 💡 depuis 1980</span>
 </div>
-
-
-  /* ─── BOUTON WHATSAPP FLOTTANT ─── */
-  @keyframes wa-bounce {
-    0%,100% { transform: scale(1); }
-    50%      { transform: scale(1.08); }
-  }
-  .wa-float {
-    position: fixed;
-    bottom: 72px;
-    right: 16px;
-    z-index: 9998;
-    width: 54px;
-    height: 54px;
-    background: #25d366;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 16px rgba(37,211,102,0.5);
-    cursor: pointer;
-    text-decoration: none;
-    animation: wa-bounce 2.5s ease-in-out infinite;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .wa-float:hover {
-    animation: none;
-    transform: scale(1.12);
-    box-shadow: 0 6px 24px rgba(37,211,102,0.7);
-  }
-  .wa-float svg {
-    width: 30px;
-    height: 30px;
-    fill: #fff;
-  }
-  .wa-float-tooltip {
-    position: absolute;
-    right: 62px;
-    background: rgba(10,14,26,0.92);
-    color: #fff;
-    font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    white-space: nowrap;
-    padding: 5px 10px;
-    border-radius: 6px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.2s;
-    border: 1px solid rgba(37,211,102,0.3);
-  }
-  .wa-float:hover .wa-float-tooltip { opacity: 1; }
-
-<a class="wa-btn" href="https://wa.me/50939295488?text=Bonjour%20ELMECO" target="_blank" rel="noopener" title="Contacter ELMECO sur WhatsApp">
+<a class="wa-btn" href="https://wa.me/50939295488?text=Bonjour%20ELMECO%20%21%20Je%20vous%20contacte%20depuis%20le%20calendrier%20AYITI%20nan%20Mondyal%202026.%20Je%20souhaite%20obtenir%20plus%20d%27informations%20sur%20vos%20services." target="_blank" rel="noopener" title="Contacter ELMECO sur WhatsApp">
   <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 </body>
