@@ -2195,7 +2195,7 @@
   }
 
   /* ─── THÈME HAÏTIEN ─── */
-  .theme-haiti {
+  .theme-haiti:not(.theme-light) {
     --bg: #0a0d14;
     --surface: #0f1520;
     --surface2: #162035;
@@ -3180,21 +3180,20 @@
   .theme-elmeco, .theme-elmeco * {
     font-family: 'Comic Sans MS', 'Comic Sans', cursive !important;
   }
-  .theme-elmeco {
-    --bg: #1a0f00 !important;
-    --surface: #261500 !important;
-    --surface2: #321c00 !important;
-    --border: #5a3a10 !important;
-    --text: #f5e8d0 !important;
-    --text2: #c4956a !important;
-    --accent: #e08040 !important;
-    --accent2: #604020 !important;
+  body.theme-elmeco:not(.theme-light) {
+    --bg: #1a0f00;
+    --surface: #261500;
+    --surface2: #321c00;
+    --border: #5a3a10;
+    --text: #f5e8d0;
+    --text2: #c4956a;
   }
   .theme-elmeco .countdown-bar { background: linear-gradient(135deg, #e08040, #604020) !important; }
   .theme-elmeco .tab.active { background: #e08040 !important; color: #fff !important; }
   .theme-elmeco header { border-bottom-color: #e08040 !important; }
   .theme-elmeco .logo-text { color: #e08040 !important; }
-  body.theme-elmeco header { top: 34px; }
+  .theme-elmeco .match-card { background: var(--surface) !important; }
+  .theme-elmeco .filter-btn.active { background: #e08040 !important; }
 
 
   .wa-btn {
@@ -3358,12 +3357,13 @@
 
   /* Mini badge utilisateur dans le header */
   .user-badge {
-    display: flex; align-items: center; gap: 5px;
+    display: inline-flex; align-items: center; gap: 5px;
     background: var(--surface2); border: 1px solid var(--border);
-    border-radius: 20px; padding: 4px 10px 4px 6px;
+    border-radius: 20px; padding: 3px 10px 3px 5px;
     cursor: pointer; transition: border-color 0.2s;
     font-family: var(--font-ui); font-size: 11px; color: var(--text2);
   }
+  .user-badge:hover { border-color: var(--accent); }
   .user-badge:hover { border-color: var(--accent); }
   .user-badge-avatar { font-size: 18px; }
 </style>
@@ -3493,6 +3493,28 @@
   function syncUsers() {
     onValue(ref(db, 'users'), snap => {
       window._fbUsers = snap.val() || {};
+
+      // Restaure le profil de l'utilisateur courant depuis Firebase
+      const uid = userId;
+      const fbProfile = window._fbUsers[uid];
+      if (fbProfile && fbProfile.name) {
+        // Met à jour le profil local depuis Firebase
+        const localRaw = localStorage.getItem('_userProfile');
+        let local = null;
+        try { local = localRaw ? JSON.parse(localRaw) : null; } catch(e) {}
+        if (!local || !local.name || local.name === 'Visiteur' || local.name === 'Anonyme') {
+          // Restaure depuis Firebase
+          const restored = {
+            name: fbProfile.name,
+            avatar: fbProfile.avatar || '⚽',
+            points: fbProfile.points || 0,
+            joined: fbProfile.joined || Date.now()
+          };
+          localStorage.setItem('_userProfile', JSON.stringify(restored));
+          if (typeof window._restoreUser === 'function') window._restoreUser(restored);
+        }
+      }
+
       const cont = document.getElementById('ambassadorsContent');
       if (cont && document.getElementById('view-ambassadors') &&
           document.getElementById('view-ambassadors').style.display !== 'none') {
@@ -3562,62 +3584,87 @@
 </div>
 
 <header>
-  <div class="header-inner">
-    <div style="display:flex;align-items:center;gap:12px;">
-      <button class="btn-menu" onclick="openSidebar()">☰ Menu</button>
-      <button class="btn-haiti-theme" id="btnInstall" onclick="installApp()" title="Installer l'application" style="display:none;font-size:18px;padding:7px 10px;">⬇️</button>
-      <div class="logo">
-        <div class="logo-icon">⚽</div>
-        <div>
-          <div class="logo-text">AYITI nan Mondyal</div>
-          <div class="logo-sub">11 Juin — 19 Juillet<br>USA · Canada · Mexique</div>
-        </div>
+  <div class="header-inner" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;gap:8px;">
+
+    <!-- GAUCHE : Menu -->
+    <button class="btn-menu" onclick="openSidebar()" style="flex-shrink:0;">☰ Menu</button>
+
+    <!-- CENTRE : Logo -->
+    <div class="logo" style="flex:1;justify-content:center;text-align:center;">
+      <div class="logo-icon">⚽</div>
+      <div>
+        <div class="logo-text">AYITI nan Mondyal</div>
+        <div class="logo-sub">11 Juin — 19 Juillet · USA · Canada · Mexique</div>
       </div>
     </div>
 
-    <div class="controls">
-      <input class="search-input" id="searchInput" type="text" style="display:none;" oninput="filterSearch()">
+    <!-- DROITE : Réglages -->
+    <button onclick="openSettingsPanel()" style="flex-shrink:0;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:20px;padding:7px 10px;cursor:pointer;transition:all 0.2s;" title="Réglages">⚙️</button>
+  </div>
 
-      <!-- Font -->
-      <div class="ctrl-group">
-        <span class="ctrl-label">Police</span>
-        <select onchange="setFont(this.value)">
-          <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
-          <option value="'Oswald', sans-serif" selected>Oswald</option>
-          <option value="'Rajdhani', sans-serif">Rajdhani</option>
-          <option value="'Roboto Condensed', sans-serif">Roboto Condensed</option>
-          <option value="'Playfair Display', serif">Playfair Display</option>
-          <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
-        </select>
-      </div>
+  <!-- Inputs cachés pour la compatibilité JS -->
+  <input type="hidden" id="searchInput">
+  <input type="color" id="accentPicker" value="#e8b923" oninput="setAccent(this.value)" style="display:none;">
+  <input type="color" id="accentPicker2" value="#ff6b35" oninput="setAccent2(this.value)" style="display:none;">
+</header>
 
-      <!-- Accent color -->
-      <div class="ctrl-group">
-        <span class="ctrl-label">Accent</span>
-        <input type="color" id="accentPicker" value="#e8b923" oninput="setAccent(this.value)">
-      </div>
+<!-- ─── PANNEAU RÉGLAGES ─── -->
+<div id="settingsPanel" style="display:none;position:fixed;top:0;right:0;bottom:0;width:280px;max-width:90vw;z-index:9995;background:var(--surface);border-left:1px solid var(--border);box-shadow:-4px 0 20px rgba(0,0,0,0.4);overflow-y:auto;padding:20px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+    <div style="font-family:var(--font-display);font-size:20px;letter-spacing:2px;color:var(--accent);">RÉGLAGES</div>
+    <button onclick="closeSettingsPanel()" style="background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;">✕</button>
+  </div>
 
-      <!-- Secondary color -->
-      <div class="ctrl-group">
-        <span class="ctrl-label">Secondaire</span>
-        <input type="color" id="accentPicker2" value="#ff6b35" oninput="setAccent2(this.value)">
-      </div>
-
-      <!-- Theme toggle -->
-      <button class="btn-theme" id="themeBtn" onclick="toggleTheme()">
-        <span id="themeIcon">☀️</span>
-        <span id="themeLabel">Clair</span>
-      </button>
-      <button class="btn-haiti-theme" onclick="toggleHaitiTheme()" title="Thème Haïti 🇭🇹" id="btnHaitiTheme">🇭🇹 Haïti</button>
-      <button class="btn-elmeco-theme" onclick="toggleElmecoTheme()" title="Thème ELMECO" id="btnElmecoTheme">⚡ ELMECO</button>
-      <div class="user-badge" id="userBadge" onclick="showProfile()" style="display:none;">
-        <span class="user-badge-avatar" id="userBadgeAvatar">⚽</span>
-        <span id="userBadgeName">...</span>
-      </div>
-      <button class="btn-theme" onclick="openAdmin()" title="Modération" style="border-color:rgba(231,76,60,0.4);color:#e74c3c;">🔐</button>
+  <!-- Profil -->
+  <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+    <div style="font-family:var(--font-ui);font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">👤 Mon Profil</div>
+    <div class="user-badge" id="userBadge" onclick="closeSettingsPanel();openProfileEditor();" style="cursor:pointer;width:100%;border-radius:10px;padding:8px 12px;justify-content:flex-start;">
+      <span class="user-badge-avatar" id="userBadgeAvatar" style="font-size:22px;">⚽</span>
+      <span id="userBadgeName" style="font-size:13px;">...</span>
     </div>
   </div>
-</header>
+
+  <!-- Thèmes -->
+  <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+    <div style="font-family:var(--font-ui);font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">🎨 Thèmes</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button class="btn-theme" id="themeBtn" onclick="toggleTheme()" style="width:100%;justify-content:center;">
+        <span id="themeIcon">☀️</span><span id="themeLabel">Clair</span>
+      </button>
+      <button class="btn-haiti-theme" onclick="toggleHaitiTheme();closeSettingsPanel();" id="btnHaitiTheme" style="width:100%;justify-content:center;">🇭🇹 Thème Haïti</button>
+      <button class="btn-elmeco-theme" onclick="toggleElmecoTheme();closeSettingsPanel();" id="btnElmecoTheme" style="width:100%;justify-content:center;">⚡ Thème ELMECO</button>
+    </div>
+  </div>
+
+  <!-- Couleurs -->
+  <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+    <div style="font-family:var(--font-ui);font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">🎨 Couleurs</div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <label style="font-family:var(--font-ui);font-size:11px;color:var(--text2);">Accent <input type="color" value="#e8b923" oninput="setAccent(this.value);document.getElementById('accentPicker').value=this.value" style="margin-left:6px;"></label>
+      <label style="font-family:var(--font-ui);font-size:11px;color:var(--text2);">2e <input type="color" value="#ff6b35" oninput="setAccent2(this.value);document.getElementById('accentPicker2').value=this.value" style="margin-left:6px;"></label>
+    </div>
+  </div>
+
+  <!-- Police -->
+  <div style="margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border);">
+    <div style="font-family:var(--font-ui);font-size:10px;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;">✏️ Police</div>
+    <select onchange="setFont(this.value)" style="width:100%;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px;font-family:var(--font-ui);font-size:12px;">
+      <option value="'Bebas Neue', sans-serif">Bebas Neue</option>
+      <option value="'Oswald', sans-serif" selected>Oswald</option>
+      <option value="'Rajdhani', sans-serif">Rajdhani</option>
+      <option value="'Roboto Condensed', sans-serif">Roboto Condensed</option>
+      <option value="'Playfair Display', serif">Playfair Display</option>
+      <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+    </select>
+  </div>
+
+  <!-- Actions -->
+  <div style="display:flex;flex-direction:column;gap:8px;">
+    <button id="btnInstall" onclick="installApp();closeSettingsPanel();" style="display:none;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:10px;font-family:var(--font-ui);font-size:12px;cursor:pointer;width:100%;">⬇️ Installer l'application</button>
+    <button onclick="closeSettingsPanel();openAdmin();" style="background:none;border:1px solid rgba(231,76,60,0.4);border-radius:8px;color:#e74c3c;padding:10px;font-family:var(--font-ui);font-size:12px;cursor:pointer;width:100%;">🔐 Modération Admin</button>
+  </div>
+</div>
+<div id="settingsOverlay" onclick="closeSettingsPanel()" style="display:none;position:fixed;inset:0;z-index:9994;background:rgba(0,0,0,0.4);"></div>
 
 <!-- ─── SIDEBAR ─── -->
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
@@ -5036,15 +5083,17 @@ function setAccent2(color) {
 function toggleTheme() {
   isDark = !isDark;
   document.body.classList.toggle('theme-light', !isDark);
-  const icon = isDark ? '☀️' : '🌙';
-  const label = isDark ? 'Clair' : 'Sombre';
-  $('themeIcon').textContent = icon;
-  $('themeLabel').textContent = label;
-  const i2 = $('themeIcon2');
-  const l2 = $('themeLabel2');
-  if (i2) i2.textContent = icon;
-  if (l2) l2.textContent = label;
+  applyThemeLabels();
   saveState({ isDark });
+}
+
+function applyThemeLabels() {
+  const icon  = isDark ? '☀️' : '🌙';
+  const label = isDark ? 'Clair' : 'Sombre';
+  ['themeIcon','themeIcon2'].forEach(id => { const el = $(id); if(el) el.textContent = icon; });
+  ['themeLabel','themeLabel2'].forEach(id => { const el = $(id); if(el) el.textContent = label; });
+  // Also update the btn-theme background
+  document.body.classList.toggle('theme-light', !isDark);
 }
 
 // ─── COUNTDOWN ──────────────────────────────────────────
@@ -5980,9 +6029,14 @@ function saveUser() {
   localStorage.setItem(USER_KEY, JSON.stringify(_user));
   if (window._fb && _user) {
     const uid = window._fb.userId;
+    // Sauvegarde dans Firebase — persistant même si localStorage est vidé
     window._fb.set(window._fb.ref(window._fb.db, 'users/' + uid), {
-      name: _user.name, avatar: _user.avatar,
-      points: _user.points || 0, updated: Date.now()
+      name: _user.name,
+      avatar: _user.avatar,
+      points: _user.points || 0,
+      joined: _user.joined || Date.now(),
+      updated: Date.now(),
+      uid: uid
     });
   }
 }
@@ -6002,6 +6056,17 @@ function showPointsToast(msg) {
   document.body.appendChild(t);
   setTimeout(() => t.remove(), 2500);
 }
+
+// Restaure le profil depuis Firebase si perdu
+window._restoreUser = function(profile) {
+  if (typeof _user !== 'undefined') {
+    _user = profile;
+    if (typeof updateUserBadge === 'function') updateUserBadge();
+    // Cache la popup si elle est ouverte
+    const ol = document.getElementById('identityOverlay');
+    if (ol) ol.style.display = 'none';
+  }
+};
 
 function initIdentity() {
   loadUser();
@@ -6046,12 +6111,22 @@ function skipIdentity() {
 
 function updateUserBadge() {
   if (!_user) return;
-  const badge = document.getElementById('userBadge');
   const avatar = document.getElementById('userBadgeAvatar');
   const name = document.getElementById('userBadgeName');
-  if (badge) badge.style.display = 'flex';
   if (avatar) avatar.textContent = _user.avatar || '⚽';
   if (name) name.textContent = (_user.name || 'Visiteur') + ' · ' + (_user.points || 0) + ' pts';
+}
+
+function openSettingsPanel() {
+  document.getElementById('settingsPanel').style.display = 'block';
+  document.getElementById('settingsOverlay').style.display = 'block';
+  // Show user badge inside panel
+  const badge = document.getElementById('userBadge');
+  if (badge) badge.style.display = 'flex';
+}
+function closeSettingsPanel() {
+  document.getElementById('settingsPanel').style.display = 'none';
+  document.getElementById('settingsOverlay').style.display = 'none';
 }
 
 function openProfileEditor() {
@@ -6255,6 +6330,7 @@ setInterval(updateCountdown, 1000);
 initNotifications();
 initSafariBanner();
 initIdentity();
+applyThemeLabels();
 window.renderAmbassadors = renderAmbassadors;
 
 // Restore persisted preferences
